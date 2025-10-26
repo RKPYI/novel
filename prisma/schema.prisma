@@ -102,6 +102,7 @@ model Novel {
   chapters      Chapter[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  publishedAt   DateTime?
 }
 
 model Chapter {
@@ -116,5 +117,5 @@ model Chapter {
   isFree        Boolean   @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  publishedAT   DateTime?
+  publishedAt   DateTime?
 }

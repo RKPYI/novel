@@ -1,3 +1,5 @@
+import {NovelStatus} from "@prisma/client";
+
 export function truncateDescription(
     description: string,
     maxLength: number = 150,
@@ -35,3 +37,22 @@ export function formatBigNumber(value: number): string {
     return `${value}`;
 }
 
+export function formatNumber(value: number): string {
+    // Convert the number to a string with dot separators every 3 digits
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+export function getStatusColor(
+    status: string,
+): "default" | "secondary" | "destructive" | "outline" {
+    switch (status.toLowerCase()) {
+        case NovelStatus.ONGOING:
+            return "default";
+        case NovelStatus.COMPLETED:
+            return "secondary";
+        case NovelStatus.HIATUS:
+            return "outline";
+        default:
+            return "outline";
+    }
+}
