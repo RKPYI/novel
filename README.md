@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/rantale-dark.svg" alt="Rantale" width="200" style="margin-top:2rem" />
+  <img src="public/rantale-adaptive.svg" alt="Rantale" width="200" style="margin-top:2rem" />
   <h1>Rantale</h1>
   <p>A minimal novels app built with Next.js (App Router), Prisma, SWR, and shadcn/ui.</p>
 </div>
