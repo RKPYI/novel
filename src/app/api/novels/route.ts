@@ -5,9 +5,10 @@ import {generateUniqueSlug} from "@/lib/helpers/slugHelpers";
 import {z, ZodError} from "zod";
 import { auth } from "@/lib/auth";
 import { Role, User } from "@prisma/client";
+import {getNovels} from "@/services/novelService";
 
 export async function GET() {
-    const novels = await prisma.novel.findMany();
+    const novels = await getNovels();
     return NextResponse.json({ data: { novels: novels } }, { status: 200 });
 }
 
