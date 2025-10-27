@@ -7,20 +7,11 @@ import {formatNumber, getStatusColor} from "@/lib/helpers/novelHelpers";
 import Link from "next/link";
 import {Separator} from "@/components/ui/separator";
 import {cn, formatDate} from "@/lib/utils";
-import {Novel} from ".prisma/client";
-import {Role} from "@prisma/client";
+import type { NovelWithAuthor } from "@/types/novel";
 
 export function NovelDetailView(
-    { novel }: {
-        novel: Novel & {
-            author: {
-                id: string,
-                name: string,
-                image: string | null,
-                role: Role
-            }
-        }
-    }) {
+    { novel }: { novel: NovelWithAuthor }
+) {
     return (
         <div className="container mx-auto max-w-7xl px-4 py-6">
             {/* Header Section */}

@@ -1,10 +1,6 @@
-import {Novel} from ".prisma/client";
 import useSWR from "swr";
 import {fetcher} from "@/lib/helpers/fetcher";
-import {Role} from "@prisma/client";
-
-type NovelsResponse = { novels: Novel[] };
-type NovelResponse = { novel: Novel & { author: { id: string, name: string, image: string, role: Role } }; };
+import type { NovelsResponse, NovelResponse } from "@/types/novel";
 
 export function useNovels() {
     const { data, error, isLoading } = useSWR<NovelsResponse>(
