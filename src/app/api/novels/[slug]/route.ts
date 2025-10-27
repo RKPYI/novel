@@ -1,4 +1,3 @@
-import {prisma} from "@/lib/prisma";
 import {NextResponse} from "next/server";
 import {getNovelBySlug} from "@/services/novelService";
 import {NotFoundError} from "@/types/error";

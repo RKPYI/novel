@@ -1,6 +1,8 @@
 // Shared Novel-related types
 // Prefer deriving from Prisma include/select for safety
 import type { Role, Novel } from "@prisma/client";
+import {z} from "zod";
+import {NovelSchema} from "@/lib/validations";
 
 export type AuthorSummary = {
   id: string;
@@ -15,3 +17,5 @@ export type NovelWithAuthor = Novel & { author: AuthorSummary };
 // API DTOs
 export type NovelsResponse = { novels: Novel[] };
 export type NovelResponse = { novel: NovelWithAuthor };
+
+export type NovelSchemaType = z.infer<typeof NovelSchema>;

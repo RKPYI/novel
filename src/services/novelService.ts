@@ -1,5 +1,8 @@
 import {prisma} from "@/lib/prisma";
-import {NotFoundError} from "@/types/error";
+import {ForbiddenError, NotFoundError} from "@/types/error";
+import {NovelSchemaType} from "@/types/novel";
+import {NovelStatus, Role} from "@prisma/client";
+import {generateUniqueSlug} from "@/lib/helpers/slugHelpers";
 
 export async function getNovels() {
     return prisma.novel.findMany();
@@ -25,4 +28,26 @@ export async function getNovelBySlug(slug: string) {
     }
 
     return novel;
+}
+
+export async function createNovel(input: NovelSchemaType, user: { id: string; role?: Role }) {
+    if (!user) throw new ForbiddenError("Unauthorized");
+
+    const role = user.role ?? Role.USER;
+    if (role !== Role.ADMIN && role !== Role.AUTHOR) throw new ForbiddenError("Forbidden");
+
+    const slug = await generateUniqueSlug(input.title);
+    if (!slug) throw new Error("Slug failed to generate");
+
+    return prisma.novel.create({
+        data: {
+            title: input.title,
+            authorId: user.id,
+            slug,
+            description: input.description,
+            status: input.status ?? NovelStatus.ONGOING,
+            coverUrl: input.coverUrl,
+            authorName: input.authorName
+        },
+    });
 }
