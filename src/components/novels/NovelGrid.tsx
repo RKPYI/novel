@@ -7,7 +7,7 @@ import { Novel } from ".prisma/client";
 import { cn } from "@/lib/utils";
 
 interface NovelGridProps {
-    novels?: Novel[];
+    novels?: Novel[] | null;
     loading?: boolean;
     size?: "default" | "compact" | "featured";
     maxItems?: number;

@@ -51,3 +51,24 @@ export async function createNovel(input: NovelSchemaType, user: { id: string; ro
         },
     });
 }
+
+export async function addViewToNovel(slug: string) {
+    try {
+        return await prisma.novel.update({
+            where: { slug },
+            data: { views: { increment: 1 } },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        image: true,
+                        role: true,
+                    },
+                },
+            },
+        });
+    } catch {
+        throw new NotFoundError("Novel not found");
+    }
+}

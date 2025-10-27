@@ -4,15 +4,15 @@ import { useState } from "react";
 import { Clock, Star, Users } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NovelGrid } from "./NovelGrid";
-import {
-    useNovels
-} from "@/hooks/useNovels";
+import {Novel} from ".prisma/client";
 
 interface NovelsTabsProps {
     defaultTab?: "popular" | "latest" | "recommended";
     maxItems?: number;
     size?: "default" | "compact" | "featured";
     className?: string;
+    novels: Novel[] | null;
+    loading: boolean;
 }
 
 export function NovelsTabs({
@@ -20,6 +20,8 @@ export function NovelsTabs({
     maxItems = 10,
     size = "default",
     className,
+    novels,
+    loading = false,
 }: NovelsTabsProps) {
     const [activeTab, setActiveTab] = useState<string>(defaultTab);
 
@@ -27,9 +29,15 @@ export function NovelsTabs({
     // const { data: popularNovels, loading: popularLoading } = usePopularNovels();
     // const { data: latestNovels, loading: latestLoading } = useLatestNovels();
     // const { data: recommendedNovels, loading: recommendedLoading } = useRecommendedNovels();
-    const { data: popularNovels, loading: popularLoading } = useNovels();
-    const { data: latestNovels, loading: latestLoading } = useNovels();
-    const { data: recommendedNovels, loading: recommendedLoading } = useNovels();
+    // const { data: popularNovels, loading: popularLoading } = useNovels();
+    // const { data: latestNovels, loading: latestLoading } = useNovels();
+    // const { data: recommendedNovels, loading: recommendedLoading } = useNovels();
+    const popularNovels = novels;
+    const latestNovels = novels;
+    const recommendedNovels = novels;
+    const popularLoading = loading;
+    const latestLoading = loading;
+    const recommendedLoading = loading;
 
     return (
         <Tabs value={activeTab} onValueChange={setActiveTab} className={className}>

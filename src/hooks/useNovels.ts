@@ -1,19 +1,8 @@
 import useSWR from "swr";
 import {fetcher} from "@/lib/helpers/fetcher";
-import type { NovelsResponse, NovelResponse } from "@/types/novel";
-
-export function useNovels() {
-    const { data, error, isLoading } = useSWR<NovelsResponse>(
-        "/api/novels",
-        fetcher
-    );
-
-    return {
-        data: data?.novels ?? [],
-        loading: isLoading,
-        error,
-    };
-}
+import type {  NovelResponse } from "@/types/novel";
+import {useNovelContext} from "@/context/NovelContext";
+import {useEffect} from "react";
 
 export function useNovel(slug: string) {
     const { data, error, isLoading } = useSWR<NovelResponse>(
