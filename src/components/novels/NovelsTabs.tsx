@@ -25,16 +25,9 @@ export function NovelsTabs({
 }: NovelsTabsProps) {
     const [activeTab, setActiveTab] = useState<string>(defaultTab);
 
-    // Fetch data using hooks
-    // const { data: popularNovels, loading: popularLoading } = usePopularNovels();
-    // const { data: latestNovels, loading: latestLoading } = useLatestNovels();
-    // const { data: recommendedNovels, loading: recommendedLoading } = useRecommendedNovels();
-    // const { data: popularNovels, loading: popularLoading } = useNovels();
-    // const { data: latestNovels, loading: latestLoading } = useNovels();
-    // const { data: recommendedNovels, loading: recommendedLoading } = useNovels();
-    const popularNovels = novels;
-    const latestNovels = novels;
-    const recommendedNovels = novels;
+    const popularNovels = novels ? [...novels]?.sort((a, b) => b.views - a.views) : [];
+    const latestNovels = novels ? [...novels]?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()) : [];
+    const recommendedNovels = novels ? [...novels].sort(() => Math.random() - 0.5) : [];
     const popularLoading = loading;
     const latestLoading = loading;
     const recommendedLoading = loading;
