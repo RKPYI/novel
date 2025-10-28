@@ -1,45 +1,14 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { searchNovel } from "@/services/novelService";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const q = (searchParams.get("q") || searchParams.get("query") || "").trim();
+    const rawQ = searchParams.get("q") ?? searchParams.get("query");
+    const q = rawQ ? rawQ.trim() : null;
     const limitParam = searchParams.get("limit");
-    const take = Math.min(Math.max(Number(limitParam) || 20, 1), 50);
 
-    if (q.length < 3) {
-      return NextResponse.json({ data: { results: [] } }, { status: 200 });
-    }
-
-    const results = await prisma.novel.findMany({
-      where: {
-        OR: [
-          { title: { contains: q, mode: "insensitive" } },
-          { description: { contains: q, mode: "insensitive" } },
-          { slug: { contains: q, mode: "insensitive" } },
-          { authorName: { contains: q, mode: "insensitive" } },
-          {
-            AND: [
-              { authorName: null },
-              { author: { name: { contains: q, mode: "insensitive" } } },
-            ],
-          },
-        ],
-      },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        authorName: true,
-        coverUrl: true,
-        status: true,
-        totalChapters: true,
-        views: true
-      },
-      take,
-      orderBy: [{ views: "desc" }, { createdAt: "desc" }],
-    });
+    const results = await searchNovel(q, limitParam);
 
     return NextResponse.json({ data: { results } }, { status: 200 });
   } catch (err) {

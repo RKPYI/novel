@@ -72,3 +72,41 @@ export async function addViewToNovel(slug: string) {
         throw new NotFoundError("Novel not found");
     }
 }
+
+export async function searchNovel(q: string | null, limitParam: string | null) {
+    const take = Math.min(Math.max(Number(limitParam) || 20, 1), 50);
+
+    if (!q) return [];
+    if (q.length < 3) {
+        return [];
+    }
+
+    return prisma.novel.findMany({
+        where: {
+            OR: [
+                { title: { contains: q, mode: "insensitive" } },
+                { description: { contains: q, mode: "insensitive" } },
+                { slug: { contains: q, mode: "insensitive" } },
+                { authorName: { contains: q, mode: "insensitive" } },
+                {
+                    AND: [
+                        { authorName: null },
+                        { author: { name: { contains: q, mode: "insensitive" } } },
+                    ],
+                },
+            ],
+        },
+        select: {
+            id: true,
+            slug: true,
+            title: true,
+            authorName: true,
+            coverUrl: true,
+            status: true,
+            totalChapters: true,
+            views: true
+        },
+        take,
+        orderBy: [{ views: "desc" }, { createdAt: "desc" }],
+    });
+}
